@@ -1,0 +1,14 @@
+<CycloneDDS xmlns="https://cdds.io/config">
+    <Domain id="any">
+        <General>
+            <NetworkInterfaceAddress>127.0.0.1</NetworkInterfaceAddress>
+            <AllowMulticast>false</AllowMulticast>
+            <MaxMessageSize>65536</MaxMessageSize>
+            <EnableMulticastReceive>false</EnableMulticastReceive>
+        </General>
+        <Discovery>
+            <ParticipantIndex>auto</ParticipantIndex>
+            <MaxAutoParticipantIndex>128</MaxAutoParticipantIndex>
+        </Discovery>
+    </Domain>
+</CycloneDDS>

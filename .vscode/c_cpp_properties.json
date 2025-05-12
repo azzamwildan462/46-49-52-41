@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/ros/humble/include/**",
+                "/opt/ros/humble/lib/**",
+                "/usr/include/opencv4/**",
+                "/usr/include/pcl-1.12/**",
+                "/usr/include/eigen3/**",
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/build/**"
+            ],
+            "defines": [],
+            "compilerPath": null,
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}

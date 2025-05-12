@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Joysticks with Anime.js</title>
+    <style>
+        /* Style the joystick container (base) */
+        .joystick-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #ccc;
+            border: 2px solid #333;
+            margin: 50px 20px;
+            overflow: hidden;
+            display: inline-block;
+            /* So that both joysticks can be side by side */
+        }
+
+        /* Style the joystick handle */
+        .joystick-handle {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Center the handle in the container */
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Create two joystick containers -->
+    <!-- <div class="joystick-container" id="joystick1">
+        <div class="joystick-handle" id="joystickHandle1"></div>
+    </div> -->
+
+    <div class="joystick-container" id="joystick2">
+        <div class="joystick-handle" id="joystickHandle2"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script>
+        // General Joystick Logic for Both Joysticks
+        const joystickContainers = document.querySelectorAll('.joystick-container');
+
+        joystickContainers.forEach(joystickContainer => {
+            const joystickHandle = joystickContainer.querySelector('.joystick-handle');
+            const containerRect = joystickContainer.getBoundingClientRect();
+            const handleRect = joystickHandle.getBoundingClientRect();
+            const handleRadius = handleRect.width / 2;
+            let isDragging = false;
+
+            // Event listeners for mouse interaction
+            joystickHandle.addEventListener('mousedown', (e) => {
+                isDragging = true;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const mouseX = e.clientX - containerRect.left;
+                const mouseY = e.clientY - containerRect.top;
+
+                // Calculate the maximum distance the handle can move
+                const maxDistance = (containerRect.width / 2) - handleRadius;
+                const deltaX = mouseX - containerRect.width / 2;
+                const deltaY = mouseY - containerRect.height / 2;
+                const distance = Math.min(Math.sqrt(deltaX * deltaX + deltaY * deltaY), maxDistance);
+
+                const angle = Math.atan2(deltaY, deltaX);
+                const handleX = distance * Math.cos(angle);
+                const handleY = distance * Math.sin(angle);
+
+                // Animate handle movement using Anime.js
+                anime({
+                    targets: joystickHandle,
+                    translateX: handleX - handleRadius,
+                    translateY: handleY - handleRadius,
+                    duration: 100,
+                    easing: 'easeOutQuad',
+                });
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                anime({
+                    targets: joystickHandle,
+                    translateX: -handleRadius,
+                    translateY: -handleRadius,
+                    duration: 300,
+                    easing: 'easeInOutQuad',
+                });
+            });
+
+            // Event listeners for touch interaction
+            joystickHandle.addEventListener('touchstart', (e) => {
+                isDragging = true;
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+
+                const touchX = e.touches[0].clientX - containerRect.left;
+                const touchY = e.touches[0].clientY - containerRect.top;
+
+                const maxDistance = (containerRect.width / 2) - handleRadius;
+
+                const deltaX = touchX - containerRect.width / 2;
+                const deltaY = touchY - containerRect.height / 2;
+                const distance = Math.min(Math.sqrt(deltaX * deltaX + deltaY * deltaY), maxDistance);
+
+                const angle = Math.atan2(deltaY, deltaX);
+                const handleX = distance * Math.cos(angle);
+                const handleY = distance * Math.sin(angle);
+
+                anime({
+                    targets: joystickHandle,
+                    translateX: handleX - handleRadius,
+                    translateY: handleY - handleRadius,
+                    duration: 100,
+                    easing: 'easeOutQuad',
+                });
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+                anime({
+                    targets: joystickHandle,
+                    translateX: -handleRadius,
+                    translateY: -handleRadius,
+                    duration: 300,
+                    easing: 'easeInOutQuad',
+                });
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
